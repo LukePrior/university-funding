@@ -6,6 +6,8 @@ The files contains a list of objects where each object is a unique funding cours
 
 This funding only applies to Commonwealth Supported Places (CSP) which are only available to domestic students.
 
+## Example
+
 ```json
 {
   "Title" :"Computer Science",
@@ -42,3 +44,9 @@ This funding only applies to Commonwealth Supported Places (CSP) which are only 
   "2009 CC" :8389
 }
 ```
+
+## Sources
+
+The data was taken directly from documents produced by the Australian Department of Education.
+
+https://www.dese.gov.au/higher-education-loan-program/approved-hep-information/funding-clusters-and-indexed-rates
