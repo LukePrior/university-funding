@@ -45,6 +45,25 @@ This funding only applies to Commonwealth Supported Places (CSP) which are only 
 }
 ```
 
+## Upfront
+
+The Maximum Student Contributions have historically been reduced if payment is made upfront instead of being deffered via a HECS-HELP loan, the difference is paid by an equal increase in the Commonwealth Contributions. 
+
+- 2009 (20%)
+- 2010 (20%)
+- 2011 (20%)
+- 2012 (10%)
+- 2013 (10%)
+- 2014 (10%)
+- 2015 (10%)
+- 2016 (10%)
+- 2017 (0%)
+- 2018 (0%)
+- 2019 (0%)
+- 2020 (0%)
+- 2021 (10%)
+- 2022 (10%)
+
 ## Sources
 
 The data was taken directly from documents produced by the Australian Department of Education.
