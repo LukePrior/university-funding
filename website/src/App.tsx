@@ -128,10 +128,10 @@ function convertData(data: any, course: string) {
       for (const [key, value] of Object.entries(entry).sort()) {
         if (key.match(/^\d{4} MSC$/)) {
           labels.push(key.split(" ")[0]);
-          datasets[0].data.push(value);
+          datasets[1].data.push(value);
         }
         if (key.match(/^\d{4} CC$/)) {
-          datasets[1].data.push(value);
+          datasets[0].data.push(value);
         }
       }
     }
