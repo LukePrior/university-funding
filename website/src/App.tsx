@@ -20,6 +20,7 @@ ChartJS.register(
 );
 
 export const options = {
+  maintainAspectRatio: false,
   responsive: true,
   scales: {
     x: {
@@ -58,67 +59,99 @@ export const options = {
   }
 };
 
-export const data = {
-  labels: [
-    "2009",
-    "2010",
-    "2011",
-    "2012",
-    "2013",
-    "2014",
-    "2015",
-    "2016",
-    "2017",
-    "2018",
-    "2019",
-    "2020",
-    "2021",
-    "2022"
-  ],
-  datasets: [
+export const hardcoded_data = {
+  labels: [],
+  datasets: [],
+};
+
+export function App() {
+  const [data, setData] = React.useState<any>([]);
+  const[chartData, setChartData] = React.useState<any>(hardcoded_data);
+  const[chartOptions, setChartOptions] = React.useState<any>(options);
+  const[course, setCourse] = React.useState<string>("Physics");
+
+  React.useEffect(() => {
+    fetch("https://raw.githubusercontent.com/LukePrior/university-funding/main/funding.json")
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+      });
+  }, []);
+
+  React.useEffect(() => {
+    setChartOptions(updateChartOptions(course));
+    setChartData(convertData(data, course));
+  }, [data, course]);
+
+  return (
+    <div>
+      <h1>University Funding</h1>
+      <p>
+        This chart shows the funding for each university course in Australia.
+        The funding is split into two categories: Commonwealth Contributions
+        (CC) and Maximum Student Contributions (MSC). The CC is paid by the
+        government and the MSC is paid by the student.
+      </p>
+      <CourseSelector data={data} course={course} setCourse={setCourse} />
+      <Bar options={chartOptions} data={chartData} style={{maxHeight: "calc(100vh - 200px)"}} />
+    </div>
+  );
+}
+
+// function that updates chart options to reflect correct course name
+function updateChartOptions(course: string) {
+  let newOptions = options;
+  newOptions.plugins.title.text = `University Funding - ${course}`;
+  return newOptions;
+}
+
+// function that converts the data from the json file into the format that the chart expects
+function convertData(data: any, course: string) {
+  let labels: any = []
+  let datasets: any = [
     {
       label: "Commonwealth Contributions",
-      data: [
-        8389,
-        8670,
-        8808,
-        9142,
-        9498,
-        9782,
-        9958,
-        10127,
-        10278,
-        10432,
-        10630,
-        10821,
-        13250,
-        13369
-      ],
+      data: [],
       backgroundColor: "rgb(255, 99, 132)"
     },
     {
       label: "Maximum Student Contributions",
-      data: [
-        7412,
-        7567,
-        7756,
-        8050,
-        8363,
-        8613,
-        8768,
-        8917,
-        9050,
-        9185,
-        9359,
-        9527,
-        7950,
-        8021
-      ],
+      data: [],
       backgroundColor: "rgb(53, 162, 235)"
     }
-  ]
-};
+  ];
 
-export function App() {
-  return <Bar options={options} data={data} />;
+  // loop through the data and extract the labels and datasets
+  for (const entry of data) {
+    if (entry.Title == course) {
+      // iterate through the object with keys sorted alphabetically
+      for (const [key, value] of Object.entries(entry).sort()) {
+        if (key.match(/^\d{4} MSC$/)) {
+          labels.push(key.split(" ")[0]);
+          datasets[0].data.push(value);
+        }
+        if (key.match(/^\d{4} CC$/)) {
+          datasets[1].data.push(value);
+        }
+      }
+    }
+  }
+
+  let processed = { labels, datasets };
+
+  return processed;
+}
+
+// function that generates the dropdown menu to select the course given data
+function CourseSelector({ data, course, setCourse }: any) {
+  let options: any = [];
+  for (const entry of data) {
+    options.push(<option value={entry.Title} selected={entry.Title == course}>{entry.Title}</option>);
+  }
+
+  return (
+    <select onChange={(e) => setCourse(e.target.value)}>
+      {options}
+    </select>
+  );
 }
