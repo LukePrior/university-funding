@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/university-funding/static/js/main.b499ceb7.js",
+    "main.js": "/university-funding/static/js/main.ab24fb85.js",
     "index.html": "/university-funding/index.html",
-    "main.b499ceb7.js.map": "/university-funding/static/js/main.b499ceb7.js.map"
+    "main.ab24fb85.js.map": "/university-funding/static/js/main.ab24fb85.js.map"
   },
   "entrypoints": [
-    "static/js/main.b499ceb7.js"
+    "static/js/main.ab24fb85.js"
   ]
 }
