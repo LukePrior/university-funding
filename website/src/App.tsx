@@ -52,7 +52,7 @@ export const options = {
             ttItem.chart.data.datasets[1].data[ttItem.dataIndex];
           let percentage = ((ttItem.parsed.y * 100) / sum).toFixed(2) + "%";
           let amount = "$" + ttItem.parsed.y.toLocaleString();
-          return `${ttItem.dataset.label}: ${amount} (${percentage})`;
+          return [`${ttItem.dataset.label}: ${amount} (${percentage})`, `Total: $${sum.toLocaleString()}`];
         }
       }
     }
@@ -68,7 +68,8 @@ export function App() {
   const [data, setData] = React.useState<any>([]);
   const[chartData, setChartData] = React.useState<any>(hardcoded_data);
   const[chartOptions, setChartOptions] = React.useState<any>(options);
-  const[course, setCourse] = React.useState<string>("Physics");
+  const[course, setCourse] = React.useState<string>("Computer Science");
+  const[yearly, setYearly] = React.useState<boolean>(true);
 
   React.useEffect(() => {
     fetch("https://raw.githubusercontent.com/LukePrior/university-funding/main/funding.json")
@@ -80,8 +81,8 @@ export function App() {
 
   React.useEffect(() => {
     setChartOptions(updateChartOptions(course));
-    setChartData(convertData(data, course));
-  }, [data, course]);
+    setChartData(convertData(data, course, yearly));
+  }, [data, course, yearly]);
 
   return (
     <div>
@@ -93,6 +94,10 @@ export function App() {
         government and the MSC is paid by the student.
       </p>
       <CourseSelector data={data} course={course} setCourse={setCourse} />
+      <select onChange={(e) => setYearly(e.target.value == "true")}>
+        <option value="false" selected={!yearly}>Subject</option>
+        <option value="true" selected={yearly}>Year</option>
+      </select>
       <Bar options={chartOptions} data={chartData} style={{maxHeight: "calc(100vh - 200px)"}} />
     </div>
   );
@@ -106,7 +111,7 @@ function updateChartOptions(course: string) {
 }
 
 // function that converts the data from the json file into the format that the chart expects
-function convertData(data: any, course: string) {
+function convertData(data: any, course: string, yearly: boolean) {
   let labels: any = []
   let datasets: any = [
     {
@@ -127,11 +132,13 @@ function convertData(data: any, course: string) {
       // iterate through the object with keys sorted alphabetically
       for (const [key, value] of Object.entries(entry).sort()) {
         if (key.match(/^\d{4} MSC$/)) {
+          const amount: number = value as number;
           labels.push(key.split(" ")[0]);
-          datasets[1].data.push(value);
+          datasets[1].data.push(Math.round(yearly ? amount : amount / 8));
         }
         if (key.match(/^\d{4} CC$/)) {
-          datasets[0].data.push(value);
+          const amount: number = value as number;
+          datasets[0].data.push(Math.round(yearly ? amount : amount / 8));
         }
       }
     }
