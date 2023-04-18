@@ -14,6 +14,8 @@ This funding only applies to Commonwealth Supported Places (CSP) which are only 
   "Narrow":"Computer Science",
   "Broad" :"Information Technology",
   "Discipline":20100,
+  "2022 MSC":8301,
+  "2022 CC" :13836,
   "2022 MSC":8021,
   "2022 CC" :13369,
   "2021 MSC":7950,
